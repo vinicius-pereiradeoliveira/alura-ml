@@ -1,5 +1,7 @@
 # usa panda para trabalhar e ler arquivo csv
 import pandas as pd
+import numpy as np
+
 df = pd.read_csv('busca.csv') # df = dataframe que recebe os dados lidos no csv pelo panda
 
 x_df = df[['home','busca','logado']] # na var x_df coloca as 3 primeiras colunas
@@ -30,17 +32,17 @@ teste_marcacoes = y[-tamanho_de_teste:]
 
 from sklearn.naive_bayes import MultinomialNB
 modelo = MultinomialNB()
-modelo.fit(treino_dados, treino_marcacoes)
+modelo.fit(treino_dados, treino_marcacoes.ravel())
 
 # treinou, agora vamos fazer a previsao e ver o resultado do treino na var diferencas
 resultado = modelo.predict(teste_dados)
 diferencas = resultado - teste_marcacoes
 
-acertos = [d for d in diferencas if d == 0]
+acertos = [d for d in diferencas if np.all(d) == 0]
 total_de_acertos = len(acertos)
-total_de_elemntos = len(teste_dados)
+total_de_elementos = len(teste_dados)
 
-taxa_de_acerto = 100.0 * total_de_acertos / total_de_elemntos
+taxa_de_acerto = 100.0 * total_de_acertos / total_de_elementos
 
 print (taxa_de_acerto)
 print (total_de_elementos)
